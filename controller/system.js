@@ -14,7 +14,7 @@ exports.system = async (req, res, next) => {
     if (num >= 1) {
         res.json({
             code: 400,
-            msg: '注册失败,用户名已存在'
+            msg: '注册失败,用户名已存在!'
         })
     } else{
         try {
