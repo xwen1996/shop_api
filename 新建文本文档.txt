@@ -1,7 +1,0 @@
-npm init -y
-npm i express
-cnpm i morgan 日志
-cnpm i cors 跨域
-cnpm i mysql 安装MySQL模块
-cnpm i moment 日期处理类库
-cnpm i jwt-simple 登录返回token
