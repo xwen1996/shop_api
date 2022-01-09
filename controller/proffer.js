@@ -44,3 +44,68 @@ exports.proffer = async (req, res, next) => {
         })
     }
 }
+// 添加供应商
+exports.profferAdd = async (req, res, next) => {
+    let params = [
+        req.body.ProfferName,
+        req.body.Address,
+        req.body.Attn,
+        req.body.AttnTel
+    ]
+    let sqlAdd = 'insert into proffer (ProfferName,Address,Attn,AttnTel)values (?,?,?,?);'
+    let sqlSelect = 'select count(*) as number from proffer where AttnTel=?;'
+    let Query = await db.query(sqlSelect, req.body.AttnTel)
+    let num = Query[0]['number']
+    console.log(num)
+    if (num >= 1) {
+        res.json({
+            code: 400,
+            msg: '添加失败,供应商已存在!'
+        })
+    } else{
+        try {
+            let result = await db.query(sqlAdd, params)
+            // console.log(result.affectedRows)
+            if (result.affectedRows >=1) {
+                res.json({
+                    code: 200,
+                    msg: '添加成功'
+                })
+            } else {
+                res.json({
+                    code: 400,
+                    msg: '添加失败'
+                })
+            }
+        } catch (err) {
+            res.json({
+                code: 500,
+                msg: '添加失败，服务器错误'
+            })
+            next(err)
+        }}
+}
+// 删除供应商
+exports.profferDelete = async (req, res, next) => {
+    let sqlDelete = 'delete from proffer where ProfferID=?;'
+    try {
+        let result = await db.query(sqlDelete, req.body.id)
+        if (result.affectedRows >=1) {
+            res.json({
+                code: 200,
+                msg: '删除成功'
+            })
+        } else {
+            res.json({
+                code: 400,
+                msg: '删除失败'
+            })
+        }
+    } catch (err) {
+        res.json({
+            code: 500,
+            msg: '删除失败，服务器错误'
+        })
+        next(err)
+    }
+}

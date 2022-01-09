@@ -21,7 +21,6 @@ exports.staff = async (req, res, next) => {
         let Total1 = await db.query(sqlTotal1, query)
         let Total = total[0]['total']
         let total1 = Total1[0]['total1']
-        // console.log(total1)
         if (result && result.length >= 1) {
             res.json({
                 code: 200,
@@ -43,4 +42,47 @@ exports.staff = async (req, res, next) => {
             msg: '服务器错误'
         })
     }
+}
+// 添加员工
+exports.staffAdd = async (req, res, next) => {
+    let params = [
+        req.body.StaffName,
+        req.body.Sex,
+        req.body.Age,
+        req.body.IDNumber,
+        req.body.Address,
+        req.body.PhoneNumber,
+        req.body.Duty,
+        req.body.Wage,
+    ]
+    let sqlAdd = 'insert into staff (StaffName,Sex,Age,IDNumber,Address,PhoneNumber,Duty,Wage)values (?,?,?,?,?,?,?,?);'
+    let sqlSelect = 'select count(*) as number from staff where IDNumber=?;'
+    let Query = await db.query(sqlSelect, req.body.IDNumber)
+    let num = Query[0]['number']
+    if (num >= 1) {
+        res.json({
+            code: 400,
+            msg: '添加失败,员工已存在!'
+        })
+    } else{
+        try {
+            let result = await db.query(sqlAdd, params)
+            if (result.affectedRows >=1) {
+                res.json({
+                    code: 200,
+                    msg: '添加成功'
+                })
+            } else {
+                res.json({
+                    code: 400,
+                    msg: '添加失败'
+                })
+            }
+        } catch (err) {
+            res.json({
+                code: 500,
+                msg: '添加失败，服务器错误'
+            })
+            next(err)
+        }}
 }

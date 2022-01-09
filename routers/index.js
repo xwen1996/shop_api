@@ -10,6 +10,8 @@ router.use(require('./inventory'))
 router.use(require('./ininventory'))
 // 出库记录
 router.use(require('./outinventory'))
+// 财务统计
+router.use(require('./finance'))
 // 会员管理
 router.use(require('./member'))
 // 供应商管理

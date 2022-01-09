@@ -45,3 +45,34 @@ exports.inventory = async (req, res, next) => {
         })
     }
 }
+// 上架
+exports.inventoryAdd = async (req, res, next) => {
+    let id = req.body.id
+    let sqlselectinven = 'SELECT Inventory from product where ProductID=?;'// 查询库存
+    let inventory = await db.query(sqlselectinven, id)
+    let inventor = inventory[0].Inventory // 当前库存
+    let addNum = req.body.add.Inventory  // 要上架的数量
+    let addInventor = inventor + parseInt(addNum)
+    let paramadd = [addInventor, id]
+    console.log(addNum)
+    let sqlAdd = 'update product set Inventory=? where ProductID=?;'
+    try {
+        let outResult = await db.query(sqlAdd, paramadd)
+        if (outResult.affectedRows >=1) {
+            res.json({
+                code: 200,
+                msg: '上架成功'
+            })
+        } else {
+            res.json({
+                code: 400,
+                msg: '上架失败'
+            })
+        }
+    } catch (error) {
+        res.json({
+            code: 500,
+            msg: '上架失败，服务器错误'
+        })
+    }
+}

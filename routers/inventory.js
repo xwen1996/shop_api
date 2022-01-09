@@ -5,5 +5,6 @@ const router = express.Router()
 
 // 库存信息
 router.get('/inventory', inventouCtrl.inventory)
+router.post('/inventory/add', inventouCtrl.inventoryAdd)
 
 module.exports = router
