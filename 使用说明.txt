@@ -1,0 +1,3 @@
+第一步：安装MySQL，导入数据库文件夹里的.sql文件
+第二步：cnpm install  // 安装依赖包 或 npm install
+第三步：nodemon app.js  // 启动 或 node app.js （记得先开启MySQL）
